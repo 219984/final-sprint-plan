@@ -2,6 +2,8 @@
 
 手机优先设计的纯静态网页，无需安装依赖。直接上传以下三个文件即可部署：
 
+线上地址：<https://219984.github.io/final-sprint-plan/>
+
 - `index.html`
 - `styles.css`
 - `script.js`
