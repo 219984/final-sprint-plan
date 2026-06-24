@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f4f0e8">
+  <meta name="description" content="6月24日至7月5日期末冲刺计划打卡">
+  <title>期末冲刺计划｜每日打卡</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-noise" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="返回顶部">
+      <span class="brand-mark">期</span>
+      <span>
+        <strong>FINAL SPRINT</strong>
+        <small>大一下 · 期末冲刺</small>
+      </span>
+    </a>
+
+    <div class="header-actions">
+      <button class="icon-button" id="exportButton" type="button" title="导出打卡数据" aria-label="导出打卡数据">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 15v4h14v-4"/></svg>
+      </button>
+      <button class="icon-button" id="themeButton" type="button" title="切换深色模式" aria-label="切换深色模式">
+        <svg class="sun-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow"><span></span> 12 DAY STUDY SYSTEM</p>
+        <h1>不是把书看完，<br><em>是把题做出来。</em></h1>
+        <p class="hero-description"><span>6月24日—7月5日，把每一天压缩成</span><span>可以落笔、可以完成、可以打勾的具体动作。</span></p>
+        <div class="hero-actions">
+          <a class="primary-button" href="#today">开始今日任务 <span>↘</span></a>
+          <button class="text-button" id="resetButton" type="button">重置全部记录</button>
+        </div>
+      </div>
+
+      <div class="progress-orbit" aria-label="总进度">
+        <svg viewBox="0 0 220 220" aria-hidden="true">
+          <circle class="orbit-track" cx="110" cy="110" r="94"></circle>
+          <circle class="orbit-progress" id="progressCircle" cx="110" cy="110" r="94"></circle>
+        </svg>
+        <div class="orbit-content">
+          <strong id="progressPercent">0%</strong>
+          <span>总完成度</span>
+        </div>
+        <span class="orbit-label orbit-label-top">START</span>
+        <span class="orbit-label orbit-label-bottom">FINISH</span>
+      </div>
+    </section>
+
+    <section class="stats-grid" aria-label="学习统计">
+      <article class="stat-card accent-card">
+        <span class="stat-label">当前阶段</span>
+        <strong id="phaseText">冲刺开始</strong>
+        <p id="dateRangeText">06.24 — 07.05</p>
+      </article>
+      <article class="stat-card">
+        <span class="stat-label">已完成任务</span>
+        <strong><span id="completedTasks">0</span><small id="totalTasks"> / 0</small></strong>
+        <p>一项一项拿下</p>
+      </article>
+      <article class="stat-card">
+        <span class="stat-label">完整打卡</span>
+        <strong><span id="completedDays">0</span><small> / 12 天</small></strong>
+        <p id="streakText">连续 0 天</p>
+      </article>
+      <article class="stat-card quote-card">
+        <span class="quote-mark">“</span>
+        <p>看到题，立刻知道<br>第一步写什么。</p>
+      </article>
+    </section>
+
+    <section class="dashboard" id="plan">
+      <aside class="subject-panel">
+        <div class="section-heading compact">
+          <span>SUBJECTS</span>
+          <h2>科目战线</h2>
+        </div>
+        <div class="subject-list" id="subjectList"></div>
+
+        <div class="weight-card">
+          <div class="weight-title">
+            <span>时间权重</span>
+            <small>建议分配</small>
+          </div>
+          <div class="weight-bar" aria-label="科目时间占比">
+            <span class="weight circuit" style="width:30%"></span>
+            <span class="weight calculus" style="width:30%"></span>
+            <span class="weight algebra" style="width:15%"></span>
+            <span class="weight physics" style="width:15%"></span>
+            <span class="weight english" style="width:10%"></span>
+          </div>
+          <div class="weight-legend">
+            <span><i class="circuit"></i>电路 30%</span>
+            <span><i class="calculus"></i>高数 30%</span>
+            <span><i class="algebra"></i>线代 15%</span>
+            <span><i class="physics"></i>物理 15%</span>
+            <span><i class="english"></i>英语 10%</span>
+          </div>
+        </div>
+      </aside>
+
+      <div class="schedule-panel">
+        <div class="section-heading schedule-heading">
+          <div>
+            <span>DAILY PLAN</span>
+            <h2>十二日作战表</h2>
+          </div>
+          <div class="filter-row" id="filterRow" aria-label="按科目筛选">
+            <button class="filter-button active" type="button" data-filter="all">全部</button>
+            <button class="filter-button" type="button" data-filter="电路">电路</button>
+            <button class="filter-button" type="button" data-filter="高数">高数</button>
+            <button class="filter-button" type="button" data-filter="线代">线代</button>
+            <button class="filter-button" type="button" data-filter="物理">物理</button>
+            <button class="filter-button" type="button" data-filter="英语">英语</button>
+          </div>
+        </div>
+        <div class="day-list" id="dayList"></div>
+      </div>
+    </section>
+
+    <section class="minimum-section" id="minimum">
+      <div class="section-heading">
+        <span>MINIMUM VIABLE DAY</span>
+        <h2>最低完成线</h2>
+        <p>被杂事打乱也不要崩。守住最低线，这一天就不算废。</p>
+      </div>
+      <div class="minimum-grid" id="minimumGrid"></div>
+    </section>
+
+    <section class="review-section" id="review">
+      <div class="review-copy">
+        <p class="eyebrow"><span></span> DAILY REVIEW</p>
+        <h2>今天留下了<br>哪一个<span>关键步骤？</span></h2>
+        <p>别只记录“学了什么”，写下你下次看到这类题时，第一步应该做什么。</p>
+      </div>
+      <div class="review-pad">
+        <label for="reviewNote">今日复盘 / 错题提醒</label>
+        <textarea id="reviewNote" placeholder="例如：一阶电路先找初值，再断开独立源求时间常数……"></textarea>
+        <div class="review-footer">
+          <span id="saveStatus">内容会自动保存在本机</span>
+          <button id="saveNoteButton" type="button">保存复盘</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="backup-section" aria-label="打卡数据备份">
+      <div>
+        <span>DATA MEMORY</span>
+        <h2>把完成记录带在身边</h2>
+        <p>同一手机、同一浏览器会自动记住。换设备前导出一次，之后即可恢复。</p>
+      </div>
+      <div class="backup-actions">
+        <button id="backupExportButton" type="button">导出记录</button>
+        <button id="backupImportButton" class="secondary" type="button">导入记录</button>
+        <input id="backupFileInput" type="file" accept="application/json,.json" hidden>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>FINAL SPRINT · 2026</p>
+    <p>每一章，都写得出标准步骤。</p>
+  </footer>
+
+  <nav class="mobile-nav" aria-label="手机快捷导航">
+    <a href="#today">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5zM8 2v4m8-4v4M5 9h14"/></svg>
+      <span>今日</span>
+    </a>
+    <a href="#plan">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h15M6 12h15M6 19h15M3 5h.01M3 12h.01M3 19h.01"/></svg>
+      <span>计划</span>
+    </a>
+    <a href="#minimum">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 13 5 5L20 6"/></svg>
+      <span>最低线</span>
+    </a>
+    <a href="#review">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4l11-11-4-4L4 16v4ZM13 7l4 4"/></svg>
+      <span>复盘</span>
+    </a>
+  </nav>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
