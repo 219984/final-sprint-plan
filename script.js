@@ -161,6 +161,7 @@ const THEME_KEY = "final-sprint-theme";
 
 let state = loadState();
 let activeFilter = "all";
+const openDays = new Set([getDisplayDayIndex()]);
 let toastTimer;
 
 const dayList = document.getElementById("dayList");
@@ -209,7 +210,6 @@ function getDisplayDayIndex() {
 
 function renderDays() {
   const today = getTodayString();
-  const displayIndex = getDisplayDayIndex();
 
   dayList.innerHTML = plan.map((day, dayIndex) => {
     const groups = day.groups.filter(group =>
@@ -223,7 +223,7 @@ function renderDays() {
     const completed = allTasks.filter(item => state.checked[item.id]).length;
     const complete = completed === allTasks.length;
     const isToday = day.date === today;
-    const shouldOpen = isToday || (today < plan[0].date && dayIndex === 0) || (today > plan.at(-1).date && dayIndex === displayIndex);
+    const shouldOpen = openDays.has(dayIndex);
 
     const groupMarkup = groups.map(group => {
       const originalGroupIndex = day.groups.indexOf(group);
@@ -253,7 +253,7 @@ function renderDays() {
     }).join("");
 
     return `
-      <article class="day-card ${isToday ? "today" : ""} ${complete ? "complete" : ""} ${shouldOpen ? "open" : ""}" id="${isToday ? "today" : `day-${dayIndex}`}">
+      <article class="day-card ${isToday ? "today" : ""} ${complete ? "complete" : ""} ${shouldOpen ? "open" : ""}" data-day-index="${dayIndex}" id="${isToday ? "today" : `day-${dayIndex}`}">
         <button class="day-summary" type="button" aria-expanded="${shouldOpen}">
           <span class="day-date">
             <strong>${day.label}</strong>
@@ -285,7 +285,11 @@ function bindDayEvents() {
     button.addEventListener("click", () => {
       const card = button.closest(".day-card");
       card.classList.toggle("open");
-      button.setAttribute("aria-expanded", card.classList.contains("open"));
+      const isOpen = card.classList.contains("open");
+      const dayIndex = Number(card.dataset.dayIndex);
+      if (isOpen) openDays.add(dayIndex);
+      else openDays.delete(dayIndex);
+      button.setAttribute("aria-expanded", isOpen);
     });
   });
 
